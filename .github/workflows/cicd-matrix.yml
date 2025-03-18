@@ -31,7 +31,7 @@ jobs:
       - name: Restore NuGet Packages
         run: nuget restore ${{ matrix.include.path }}/PG.LARA.${{ matrix.include.name }}.WebJob.csproj
 
-      - name: Build Application (${{ matrix.webjob.name }})
+      - name: Build Application (${{ matrix.include.name }})
         run: |
           msbuild ${{ matrix.include.path }}/PG.LARA.${{ matrix.include.name }}.WebJob.csproj `
             /p:Configuration=${{ env.BUILD_CONFIGURATION }} `

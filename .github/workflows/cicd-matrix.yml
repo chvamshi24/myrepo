@@ -12,7 +12,7 @@ jobs:
 
  backwords-compatibility:
     # Dynamically set the job name based on the application name
-    name: ${{ matrix.include.name }}
+    name: ${{ matrix.name }}
     runs-on: windows-latest
     strategy:
       matrix:

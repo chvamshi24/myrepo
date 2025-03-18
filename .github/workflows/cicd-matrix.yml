@@ -1,0 +1,39 @@
+name: Deploy Applications to Azure Web App
+
+on:
+  push:
+    branches:
+      - cicd
+env:
+  AZURE_WEBAPP_NAME: "as-lara"
+  BUILD_CONFIGURATION: "Release"
+
+jobs:
+
+  build-and-deploy:
+    # Dynamically set the job name based on the application name
+    name: ${{ matrix.webjob.name }}
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        include:
+          - { path: PG.LARA.ValidationSummaryReport.WebJob, name: NotifyMetadataValidation, type: Triggered }
+          - { path: PG.LARA.GenerateValidationSummary.WebJob, name: GenerateValidationSummary, type: Triggered }
+          - { path: PG.LARA.GeneratesJDATemplates.WebJob, name: GenerateTMSOutputTemplates, type: Triggered }
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1
+
+      - name: Restore NuGet Packages
+        run: nuget restore ${{ matrix.webjob.path }}/PG.LARA.${{ matrix.webjob.name }}.WebJob.csproj
+
+      - name: Build Application (${{ matrix.webjob.name }})
+        run: |
+          msbuild ${{ matrix.webjob.path }}/PG.LARA.${{ matrix.webjob.name }}.WebJob.csproj `
+            /p:Configuration=${{ env.BUILD_CONFIGURATION }} `
+            /p:DeployOnBuild=true `
+            /p:OutputPath=./publish/App_Data/jobs/${{ matrix.webjob.type }}/DEV-${{ matrix.webjob.name }}

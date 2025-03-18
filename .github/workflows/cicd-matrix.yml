@@ -29,11 +29,11 @@ jobs:
         uses: NuGet/setup-nuget@v1
 
       - name: Restore NuGet Packages
-        run: nuget restore ${{ matrix.include.path }}/PG.LARA.${{ matrix.include.name }}.WebJob.csproj
+        run: nuget restore ${{ matrix.path }}/PG.LARA.${{ matrix.name }}.WebJob.csproj
 
       - name: Build Application (${{ matrix.include.name }})
         run: |
-          msbuild ${{ matrix.include.path }}/PG.LARA.${{ matrix.include.name }}.WebJob.csproj `
+          msbuild ${{ matrix.path }}/PG.LARA.${{ matrix.name }}.WebJob.csproj `
             /p:Configuration=${{ env.BUILD_CONFIGURATION }} `
             /p:DeployOnBuild=true `
-            /p:OutputPath=./publish/App_Data/jobs/${{ matrix.include.type }}/DEV-${{ matrix.include.name }}
+            /p:OutputPath=./publish/App_Data/jobs/${{ matrix.type }}/DEV-${{ matrix.name }}

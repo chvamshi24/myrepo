@@ -14,7 +14,7 @@ jobs:
  backwords-compatibility:
     # Dynamically set the job name based on the application name
     name: ${{ matrix.name }}
-    runs-on: windows-2019
+    runs-on: windows-latest
     strategy:
       matrix:
         include:
@@ -26,10 +26,19 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Check Visual Studio Installer Path
+        run: |
+         if (Test-Path "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\vs_installer.exe") {
+           Write-Output "Visual Studio Installer found."
+         } else {
+           Write-Output "Visual Studio Installer not found."
+           exit 1
+         }
       - name: Install .NET Framework 4.6.1 using Visual Studio Installer
         run: |
-           Start-Process "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\vs_installer.exe" -ArgumentList "modify --add Microsoft.Net.Component.4.6.1.TargetingPack --quiet --norestart" -NoNewWindow -Wait
-
+         Start-Process "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\vs_installer.exe" `
+         -ArgumentList "modify --add Microsoft.Net.Component.4.6.1.TargetingPack --quiet --norestart" `
+         -NoNewWindow -Wait
       # - name: Install Nuget
       #   uses: nuget/setup-nuget@v1
       #   with:

@@ -6,6 +6,7 @@ on:
       - cicd
 env:
   AZURE_WEBAPP_NAME: "as-lara"
+  NUGET_VERSION: '4.6.1'
   BUILD_CONFIGURATION: "Release"
 
 jobs:
@@ -24,6 +25,11 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v3
+
+      - name: Install Nuget
+        uses: nuget/setup-nuget@v1
+        with:
+          nuget-version: ${{ env.NUGET_VERSION}}
 
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1

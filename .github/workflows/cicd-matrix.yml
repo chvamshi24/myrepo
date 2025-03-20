@@ -14,7 +14,7 @@ jobs:
  backwords-compatibility:
     # Dynamically set the job name based on the application name
     name: ${{ matrix.name }}
-    runs-on: windows-latest
+    runs-on: windows-2019
     strategy:
       matrix:
         include:
@@ -26,14 +26,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Install Nuget
-        uses: nuget/setup-nuget@v1
-        with:
-          nuget-version: ${{ env.NUGET_VERSION}}
+      # - name: Install Nuget
+      #   uses: nuget/setup-nuget@v1
+      #   with:
+      #     nuget-version: ${{ env.NUGET_VERSION}}
           
-      - name: Install .NET Framework 4.6.1 Developer Pack
-        run: |
-           choco install netfx-4.6.1-devpack -y
+      # - name: Install .NET Framework 4.6.1 Developer Pack
+      #   run: |
+      #      choco install netfx-4.6.1-devpack -y
 
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1

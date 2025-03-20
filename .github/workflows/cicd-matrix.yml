@@ -6,7 +6,7 @@ on:
       - cicd
 env:
   AZURE_WEBAPP_NAME: "as-lara"
-  NUGET_VERSION: '4.6.1'
+  # NUGET_VERSION: '4.6.1'
   BUILD_CONFIGURATION: "Release"
 
 jobs:
@@ -25,6 +25,12 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v3
+
+      - name: Install .NET Framework 4.6.1 using Visual Studio Installer
+        run: |
+           "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\vs_installer.exe" modify ^
+           --add Microsoft.Net.Component.4.6.1.TargetingPack ^
+           --quiet --norestart
 
       # - name: Install Nuget
       #   uses: nuget/setup-nuget@v1
